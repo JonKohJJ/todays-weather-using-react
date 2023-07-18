@@ -5,15 +5,14 @@ import { useState, useRef } from 'react';
 
 function App() {
 
-  // store user input in a state
-  const [userInput, setUserInput] = useState('');
+  // store user input as a ref
   const refCountry = useRef();
 
   // store user input in a state
   const [result, setResult] = useState([]);
   const [notFound, setNotFound] = useState(false);
   
-  // function to fetch weather data once user submits the country
+  // function to fetch weather data once user submits the country or searches the country again
   async function onSubmit(e, country){
     e.preventDefault();
     try{
@@ -50,14 +49,17 @@ function App() {
     return strTime;
   }
 
-  function onDelete(e){
-    console.log("delete: ", e);
-
-  }
-
   // store previous user input in a state 
   const [searches, setSearches] = useState([]);
 
+  // function to delete search
+  function onDelete(index){
+    setSearches(prev => {
+      return prev.filter((item, currentIndex) => currentIndex !== index)
+    })
+
+  }
+  
   return (
     <div className="App">
 
@@ -108,10 +110,13 @@ function App() {
                   <li key={index}>
                     <p>{index} / {search.name}, {search.sys.country}</p>
                     <p>{search.search_timestamp}</p>
+
                     <button value={search.name} onClick={(e) => {onSubmit(e, e.target.value)}}>Search</button>
-                    <button value={index} onClick={(e) => {
-                      console.log(e.target.value);
+
+                    <button onClick={() => {
+                      onDelete(index)
                     }}>Delete</button>
+                    
                   </li>
                 )
               })
