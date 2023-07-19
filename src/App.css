@@ -6,13 +6,247 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 14px;
 }
 
-.previous-searches, 
+/* ===== Background Image ===== */
+body{
+  background-image: url(/public/images/bg-light.png);
+  padding: 20px 0;
+}
+
+/* ===== App - Root ===== */
+.App{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== Container ===== */
+.container{
+  /* outline: 1px solid red; */
+  width: 90%;
+  min-width: 200px;
+  max-width: 1000px;
+}
+
+/* ===== Seach Component ===== */
+.search{
+  /* outline: 1px solid blue; */
+}
+.search form{
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  margin-bottom: 100px;
+}
+.search .caption{
+  font-size: 8px;
+  color: rgb(0 0 0 / 40%);
+}
+.search .search-input-div{
+  flex-grow: 1;
+  margin-right: 10px;
+  background-color: #cab1ff;
+  border-radius: 10px;
+  padding: 10px;
+}
+.search .search-input-div input{
+  background-color: transparent;
+  border: none;
+  width: 100%;
+}
+.search .search-input-div input:focus{
+  outline: none;
+}
+.search .btn-submit{
+  background-color: #5828A6;
+  border: none;
+  border-radius: 10px;
+  padding: 5px;
+  color: white;
+  height: 40px;
+  width: 40px;
+}
+
+
+/* ===== Content ===== */
 .content{
-  margin-top: 30px;
+  border: 1px solid hsla(0, 0%, 100%, 0.4);
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 30px 20px;
+  position: relative;
+}
+/* .content:after {
+    content: "";
+    width: 30px;
+    height: 30px;
+    background: url("./images/sun.png");
+    top: 0;
+    right: 0;
+    position: absolute;
+    display: inline-block;
+    background: red;
+} */
+.sun-icon{
+  position: absolute;
+  top: -80px;
+  right: 0;
+  width: 180px;
+}
+.title{
+  font-size: 14px;
+}
+.not-found{
+  color: red;
+  margin-top: 10px;
+  font-weight: 600;
 }
 
-.previous-searches li{
+
+
+/* ===== Results ===== */
+.flex-div{
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  /* outline: 1px solid black; */
+}
+.flex-div.result{ 
+    margin: 15px 0;
+}
+
+
+.left{
+
+}
+.result-temp{
+  color: #6C40B5;
+  font-size: 65px;
+  font-weight: bold;
+  line-height: 65px;
+  margin: 5px 0;
+}
+.result-high{
+  margin-right: 5px
+}
+.result-location{
+  font-weight: bold;
+  color: #666666;
+  margin-top: 5px;
+}
+
+.right{
+  text-align: right;
+  flex-grow: 1;
+  color: #666666;
+}
+.right p{
+  margin-top: 5px;
+}
+
+
+
+
+/* ===== Previous Searches ===== */
+.previous-searches{
+  margin-top: 25px;
+  background-color: hwb(0 100% 0% / 0.2);
+  padding: 20px;
+  border-radius: 20px;
+}
+ul{
+  margin-top: 5px;
+}
+li{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 10px;
+  background-color: hsla(0, 0%, 100%, 0.4);
+  border-radius: 20px;
   margin-top: 20px;
+}
+.previous-searches-smaller{
+  font-size: 10px;
+}
+.previous-searches button{
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  border: none;
+  background-color: white;
+  margin: 0 2px;
+  box-shadow: rgba(0, 0, 0, 0.10) 0px 4px 12px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+.previous-searches button:hover{
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+
+
+
+
+
+
+@media screen and (min-width: 1024px){
+    .container{
+      max-width: 1000px;
+    }
+
+    *,
+    *::after,
+    *::before{
+      font-size: 18px;
+    }
+
+    .search .caption{
+      font-size: 10px;
+    }
+
+    .title{
+      font-size: 16px;
+    }
+
+    .result-temp{
+      font-size: 75px;
+    }
+
+    .previous-searches-smaller{
+      font-size: 14px;
+    }
+
+
+    .right{
+      display: flex;
+      justify-content: flex-end;
+    }
+    .right p{
+      margin-right: 40px;
+    }
+
+    .li-left{
+      flex-grow: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-right: 25px;
+    }
+
+    .content{
+      padding: 40px 50px;
+    }
+
+    .sun-icon{
+      width: 300px;
+      top: -100px;
+    }
+
 }

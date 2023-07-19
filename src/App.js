@@ -1,7 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 import { useState, useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import sun from './images/sun.png';
 
 function App() {
 
@@ -16,9 +18,12 @@ function App() {
   async function onSubmit(e, country){
     e.preventDefault();
     try{
-
+      
+      
       const res = await axios.get("https://api.openweathermap.org/data/2.5/weather?q="+ country +"&APPID=0fdc955e122adf4cc662101c34f94847&units=metric");
       setNotFound(false);
+
+      console.log("country: ", res.data.weather);
 
       // get timestamp
       const date = new Date();
@@ -31,6 +36,7 @@ function App() {
       setResult([{...res.data, search_timestamp:new_date}]);
       // add result to the previous searches
       setSearches([...searches, {...res.data, search_timestamp:new_date}])
+
 
     }catch(err){
       console.log("err: ", err);
@@ -59,72 +65,112 @@ function App() {
     })
 
   }
-  
+
   return (
     <div className="App">
 
-      <p>Today's Weather</p>
+      <div className='container'>
 
-      <div className='search'>
-        <form onSubmit={(e) => {onSubmit(e, refCountry.current.value)}}>
 
-          <input 
-            type='text' 
-            placeholder='Country' 
-            ref={refCountry}
-          >
-          </input>
+          <div className='search'>
+            
+            <form onSubmit={(e) => {onSubmit(e, refCountry.current.value)}}>
 
-          <input type='submit'>
-          </input>
-
-        </form>
-      </div>
-
-      <div className='content'>
-
-        {
-          notFound ? <p>Not Found</p> :
-          result.map(res => {
-            return(
-              <div className='result' key={res.coor}>
-                <p className='temp'>Temp:{res.main.temp}</p>
-                <p className='temp'>High:{res.main.temp_max}</p>
-                <p className='temp'>Low:{res.main.temp_min}</p>
-                <p className='temp'>Location:{res.name}, {res.sys.country}</p>
-                <p className='temp'>Timestamp:{res.search_timestamp}</p>
-                <p className='temp'>Humidity:{res.main.humidity}</p>
-                <p className='temp'>Clouds:{res.weather[0].description}</p>
+              <div className='search-input-div'>
+                <p className='caption'>Country</p>
+                <input 
+                  className='country-input'
+                  type='text'
+                  ref={refCountry}
+                >
+                </input>
               </div>
-            )
-          })
-        }
+              
+              <button type='submit' className='btn-submit'>
+                  <FontAwesomeIcon icon={faMagnifyingGlass} style={{color: "#ffffff",}}/>
+              </button>
 
+            </form>
+          </div>
 
-        <div className='previous-searches'>
-          <p>Search History</p>
-          <ul>
+          <div className='content'>
+            <img className='sun-icon' src={sun} />
+            <p className='title'>Today's Weather</p>
             {
-              searches.map((search, index) => {
+              notFound ? <p className='not-found'>Not Found</p> :
+              result.map(res => {
                 return(
-                  <li key={index}>
-                    <p>{index} / {search.name}, {search.sys.country}</p>
-                    <p>{search.search_timestamp}</p>
+                  
+                  <div className='flex-div result' key={res.coor}>
 
-                    <button value={search.name} onClick={(e) => {onSubmit(e, e.target.value)}}>Search</button>
+                    <div className='left'>
+                        <p className='result-temp'>{Math.round(res.main.temp)}&deg;</p>
 
-                    <button onClick={() => {
-                      onDelete(index)
-                    }}>Delete</button>
-                    
-                  </li>
+                        <div className='flex-div'>
+                            <p className='result-high'>H: {Math.round(res.main.temp_max)}&deg;</p>
+                            <p className='result-low'>L: {Math.round(res.main.temp_min)}&deg;</p>
+                        </div>
+
+                        <p className='result-location'>{res.name}, {res.sys.country}</p>
+                    </div>
+
+
+                    <div className='right'>
+                        <p className='result-clouds'>{res.weather[0].main}</p>
+                        <p className='result-humidity'>Humidity: {res.main.humidity}%</p>
+                        <p className='result-timestamp'>{res.search_timestamp}</p>
+                    </div>
+
+
+                  </div>
                 )
               })
             }
-          </ul>
-        </div>
+
+
+            <div className='previous-searches'>
+              <p className='title'>Search History</p>
+              <ul>
+                {
+                  searches.map((search, index) => {
+                    return(
+                      <li key={index}>
+
+                        <div className='li-left'>
+                          <p>{search.name}, {search.sys.country}</p>
+                          <p className='previous-searches-smaller'>{search.search_timestamp}</p>
+                        </div>
+                        
+                        <div>
+                          <button value={search.name} onClick={(e) => {onSubmit(e, e.target.getAttribute("value"))}}>
+                              <FontAwesomeIcon value={search.name} icon={faMagnifyingGlass} style={{color: "#6d6d6d",}}/>
+                          </button>
+
+                          <button onClick={() => {
+                            onDelete(index)
+                          }}>
+                            <FontAwesomeIcon icon={faTrashCan} style={{color: "#6d6d6d",}}/>
+                          </button>
+
+                          
+                        </div>
+
+
+
+
+                        
+                      </li>
+                    )
+                  })
+                }
+              </ul>
+            </div>
+
+          </div>
 
       </div>
+
+      
 
     </div>
   );
